@@ -141,7 +141,7 @@ HD_System *hdSystem;
     
     id delegate = pvc;
     [connectedPeripheral setDelegate:delegate]; // in two steps to avoid warning
-    // [pvc setCentralManager:centralManager];
+    [pvc setCentralManager:centralManager];
     [pvc setPeripheral:connectedPeripheral];
     [self presentViewController:pvc animated:true completion:nil];
 }

@@ -25,6 +25,7 @@
     __weak IBOutlet UISlider *angleSlider;
 }
 
+@property(nonatomic, strong) CBCentralManager *centralManager;
 @property(nonatomic, strong) CBPeripheral *peripheral;
 
 - (IBAction)previousButtonPressed:(id)sender;

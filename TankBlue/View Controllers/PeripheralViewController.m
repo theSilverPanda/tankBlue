@@ -15,7 +15,7 @@ extern HD_System *hdSystem;
 @end
 
 @implementation PeripheralViewController
-@synthesize peripheral;
+@synthesize centralManager, peripheral;
 
 #define ItsMaxSpeed_ 255
 
@@ -123,7 +123,7 @@ extern HD_System *hdSystem;
         NSData *value = [characteristic value];
         if(value) {
             NSLog(@"");
-            NSLog(@"discovered characteristic with UUID = %@ has value with length = %lu", [characteristic UUID], [value length]);
+            NSLog(@"characteristic with UUID = %@ did update value with length = %lu", [characteristic UUID], [value length]);
             
             // convert NSdata *value to a character string and a hex string
             // first convert data into unsigned chars
@@ -179,6 +179,7 @@ extern HD_System *hdSystem;
 
 - (IBAction)previousButtonPressed:(id)sender
 {
+    [centralManager cancelPeripheralConnection:peripheral];
     [self gotoLastScreen];
 }
 
