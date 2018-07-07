@@ -20,6 +20,14 @@
 		B66319A41FEEE35100E15D2F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B66319A31FEEE35100E15D2F /* AppDelegate.m */; };
 		B66319AC1FEEE35100E15D2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B66319AB1FEEE35100E15D2F /* Assets.xcassets */; };
 		B66319B21FEEE35100E15D2F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B66319B11FEEE35100E15D2F /* main.m */; };
+		B66ABFFF20ED944C00FFD97E /* MenuTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B66ABFFD20ED944C00FFD97E /* MenuTestViewController.m */; };
+		B66AC00020ED944C00FFD97E /* MenuTestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B66ABFFE20ED944C00FFD97E /* MenuTestViewController.xib */; };
+		B66AC00820ED995600FFD97E /* TableViewData.m in Sources */ = {isa = PBXBuildFile; fileRef = B66AC00620ED995600FFD97E /* TableViewData.m */; };
+		B66AC00920ED995600FFD97E /* TableViewSectionData.m in Sources */ = {isa = PBXBuildFile; fileRef = B66AC00720ED995600FFD97E /* TableViewSectionData.m */; };
+		B66AC00D20ED9A4100FFD97E /* ButtonTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B66AC00A20ED9A4000FFD97E /* ButtonTableCell.m */; };
+		B66AC00E20ED9A4100FFD97E /* ButtonTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B66AC00B20ED9A4000FFD97E /* ButtonTableCell.xib */; };
+		B69B05F120EC152C001D8B0C /* AnalyzePeripheralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B69B05EF20EC152C001D8B0C /* AnalyzePeripheralViewController.m */; };
+		B69B05F220EC152C001D8B0C /* AnalyzePeripheralViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B69B05F020EC152C001D8B0C /* AnalyzePeripheralViewController.xib */; };
 		B6CEF5541FF9B95E004A653E /* PeripheralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CEF5521FF9B95E004A653E /* PeripheralViewController.m */; };
 		B6CEF5551FF9B95E004A653E /* PeripheralViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6CEF5531FF9B95E004A653E /* PeripheralViewController.xib */; };
 /* End PBXBuildFile section */
@@ -46,6 +54,19 @@
 		B66319AB1FEEE35100E15D2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B66319B01FEEE35100E15D2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B66319B11FEEE35100E15D2F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B66ABFFC20ED944C00FFD97E /* MenuTestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenuTestViewController.h; sourceTree = "<group>"; };
+		B66ABFFD20ED944C00FFD97E /* MenuTestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenuTestViewController.m; sourceTree = "<group>"; };
+		B66ABFFE20ED944C00FFD97E /* MenuTestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuTestViewController.xib; sourceTree = "<group>"; };
+		B66AC00420ED995600FFD97E /* TableViewData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewData.h; sourceTree = "<group>"; };
+		B66AC00520ED995600FFD97E /* TableViewSectionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewSectionData.h; sourceTree = "<group>"; };
+		B66AC00620ED995600FFD97E /* TableViewData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewData.m; sourceTree = "<group>"; };
+		B66AC00720ED995600FFD97E /* TableViewSectionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewSectionData.m; sourceTree = "<group>"; };
+		B66AC00A20ED9A4000FFD97E /* ButtonTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonTableCell.m; sourceTree = "<group>"; };
+		B66AC00B20ED9A4000FFD97E /* ButtonTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ButtonTableCell.xib; sourceTree = "<group>"; };
+		B66AC00C20ED9A4000FFD97E /* ButtonTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonTableCell.h; sourceTree = "<group>"; };
+		B69B05EE20EC152C001D8B0C /* AnalyzePeripheralViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnalyzePeripheralViewController.h; sourceTree = "<group>"; };
+		B69B05EF20EC152C001D8B0C /* AnalyzePeripheralViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnalyzePeripheralViewController.m; sourceTree = "<group>"; };
+		B69B05F020EC152C001D8B0C /* AnalyzePeripheralViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AnalyzePeripheralViewController.xib; sourceTree = "<group>"; };
 		B6CEF5511FF9B95E004A653E /* PeripheralViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PeripheralViewController.h; sourceTree = "<group>"; };
 		B6CEF5521FF9B95E004A653E /* PeripheralViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PeripheralViewController.m; sourceTree = "<group>"; };
 		B6CEF5531FF9B95E004A653E /* PeripheralViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PeripheralViewController.xib; sourceTree = "<group>"; };
@@ -71,6 +92,12 @@
 				B6CEF5511FF9B95E004A653E /* PeripheralViewController.h */,
 				B6CEF5521FF9B95E004A653E /* PeripheralViewController.m */,
 				B6CEF5531FF9B95E004A653E /* PeripheralViewController.xib */,
+				B69B05EE20EC152C001D8B0C /* AnalyzePeripheralViewController.h */,
+				B69B05EF20EC152C001D8B0C /* AnalyzePeripheralViewController.m */,
+				B69B05F020EC152C001D8B0C /* AnalyzePeripheralViewController.xib */,
+				B66ABFFC20ED944C00FFD97E /* MenuTestViewController.h */,
+				B66ABFFD20ED944C00FFD97E /* MenuTestViewController.m */,
+				B66ABFFE20ED944C00FFD97E /* MenuTestViewController.xib */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -128,6 +155,13 @@
 			children = (
 				B604EB932024E7BA0051C88F /* PeripheralItem.h */,
 				B604EB942024E7BA0051C88F /* PeripheralItem.m */,
+				B66AC00420ED995600FFD97E /* TableViewData.h */,
+				B66AC00620ED995600FFD97E /* TableViewData.m */,
+				B66AC00520ED995600FFD97E /* TableViewSectionData.h */,
+				B66AC00720ED995600FFD97E /* TableViewSectionData.m */,
+				B66AC00C20ED9A4000FFD97E /* ButtonTableCell.h */,
+				B66AC00A20ED9A4000FFD97E /* ButtonTableCell.m */,
+				B66AC00B20ED9A4000FFD97E /* ButtonTableCell.xib */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -193,8 +227,11 @@
 				B65ADCAE2035FA24002738A1 /* CentralViewController.xib in Resources */,
 				B6CEF5551FF9B95E004A653E /* PeripheralViewController.xib in Resources */,
 				B6387A7E1FF5FB07004680A4 /* UIPopupView_x@2x.png in Resources */,
+				B69B05F220EC152C001D8B0C /* AnalyzePeripheralViewController.xib in Resources */,
+				B66AC00E20ED9A4100FFD97E /* ButtonTableCell.xib in Resources */,
 				B6387A7C1FF5FB07004680A4 /* UIPopupView_x.png in Resources */,
 				B6387A7A1FF5FB07004680A4 /* UIPopupView_checkmark.png in Resources */,
+				B66AC00020ED944C00FFD97E /* MenuTestViewController.xib in Resources */,
 				B66319AC1FEEE35100E15D2F /* Assets.xcassets in Resources */,
 				B6387A7D1FF5FB07004680A4 /* UIPopupView_checkmark@2x.png in Resources */,
 			);
@@ -210,10 +247,15 @@
 				B6387A7B1FF5FB07004680A4 /* UIPopupView.m in Sources */,
 				B6CEF5541FF9B95E004A653E /* PeripheralViewController.m in Sources */,
 				B66319B21FEEE35100E15D2F /* main.m in Sources */,
+				B66AC00920ED995600FFD97E /* TableViewSectionData.m in Sources */,
+				B66ABFFF20ED944C00FFD97E /* MenuTestViewController.m in Sources */,
 				B6387A811FF5FB56004680A4 /* HDHexConversion.m in Sources */,
 				B65ADCAD2035FA24002738A1 /* CentralViewController.m in Sources */,
 				B6387A701FF5F84F004680A4 /* HD_System.m in Sources */,
+				B69B05F120EC152C001D8B0C /* AnalyzePeripheralViewController.m in Sources */,
 				B604EB952024E7BA0051C88F /* PeripheralItem.m in Sources */,
+				B66AC00820ED995600FFD97E /* TableViewData.m in Sources */,
+				B66AC00D20ED9A4100FFD97E /* ButtonTableCell.m in Sources */,
 				B66319A41FEEE35100E15D2F /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

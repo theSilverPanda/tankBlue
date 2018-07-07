@@ -34,6 +34,7 @@
 - (IBAction)angleSliderValueChanged:(id)sender;
 - (IBAction)stopButtonPressed:(id)sender;
 - (IBAction)resetResponsesButtonPressed:(id)sender;
+- (IBAction)analyzePeripheralButtonPressed:(id)sender;
 
 - (void)gotoLastScreen;
 

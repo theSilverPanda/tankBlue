@@ -8,6 +8,7 @@
 
 #import "PeripheralViewController.h"
 #import "HD_System.h"
+#import "AnalyzePeripheralViewController.h"
 
 extern HD_System *hdSystem;
 
@@ -232,6 +233,17 @@ extern HD_System *hdSystem;
 {
     responseString = @"";
     [messageTextView setText:responseString];
+}
+
+- (IBAction)analyzePeripheralButtonPressed:(id)sender
+{
+    AnalyzePeripheralViewController *apvc = [[AnalyzePeripheralViewController alloc] init];
+    
+    id delegate = apvc;
+    [peripheral setDelegate:delegate];
+    [apvc setCentralManager:centralManager];
+    [apvc setPeripheral:peripheral];
+    [self presentViewController:apvc animated:true completion:nil];
 }
 
 #pragma mark - Text field delegate
