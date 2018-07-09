@@ -7,7 +7,13 @@
 //
 
 #import "MenuTestViewController.h"
+#import "TableViewSectionData.h"
+#import "TableViewData.h"
+#import "HD_System.h"
+
 #import "AnalyzePeripheralViewController.h"
+
+extern HD_System *hdSystem;
 
 #define servicePtrKey @"servicePtr"
 #define characteristicsArrayKey @"characteristicsArray"
@@ -33,6 +39,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [peripheral discoverServices:nil];
+    // [self populateMenuTableViewController];
 }
 
 - (IBAction)backButtonPressed:(id)sender
@@ -42,6 +49,7 @@
 
 - (IBAction)rediscoverServicesButtonPressed:(id)sender
 {
+    [peripheralArray removeAllObjects];
     [peripheral discoverServices:nil];
 }
 
@@ -51,28 +59,19 @@
     [self presentViewController:mtvc animated:true completion:nil];
 }
 
-- (IBAction)revisitDataButtonPressed:(id)sender
-{
-    [self logData];
-}
-
 #pragma mark - CBPeripheral delegate
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(nullable NSError *)error
 {
     if(error) NSLog(@"didDiscoverServices error: %@", [error localizedDescription]);
     else {
-        NSUInteger count = [[peripheral services] count];
-        NSString *message = (count == 1) ? @"service discovered" : @"services discovered";
-        NSLog(@"%d %@", (int)count, message);
         for(CBService *service in [peripheral services]) {
-            CBUUID *uuid = [service UUID];
-            NSLog(@"  with UUID: '%@'", uuid);
             [peripheral discoverCharacteristics:nil forService:service];
             
             NSMutableDictionary *serviceDict = [NSMutableDictionary dictionaryWithCapacity:0];
             [serviceDict setObject:service forKey:servicePtrKey];
             [peripheralArray addObject:serviceDict];
         }
+        [self logData];
     }
 }
 
@@ -92,100 +91,50 @@
     return propertyStrings;
 }
 
-- (void)logProperties:(CBCharacteristicProperties)properties
-{
-    NSLog(@"    with properties(%lu):", properties);
-    NSMutableArray *propertyStrings = [self getPropertyStrings:properties];
-    for(NSString *propertyString in propertyStrings) NSLog(@"      %@", propertyString);
-}
-
-- (void)displayBoolWithName:(NSString *)name andValue:(BOOL)value
-{
-    NSString *valueString = value ? @"true" : @"false";
-    NSLog(@"    BOOL %@ == %@", name, valueString);
-}
-
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(nonnull CBService *)service error:(nullable NSError *)error
 {
     if(error) NSLog(@"didDiscoverCharacteristics error: %@", [error localizedDescription]);
     else {
-        NSUInteger count = [[service characteristics] count];
-        NSString *message = (count == 1) ? @"characteristic" : @"characteristics";
-        NSString *description = [NSString stringWithFormat:@"for service with UUID: '%@'", [service UUID]];
-        NSLog(@"%d %@ %@", (int)count, message, description);
+        NSData *value;
+        CBCharacteristicProperties properties;
         
-        NSUInteger descriptorCount;
-        
-        // find the service
         for(NSMutableDictionary *serviceDict in peripheralArray) if([serviceDict objectForKey:servicePtrKey] == service) {
-            
+        
             // to this service, add characteristics array
             NSMutableArray *characteristicsArray = [NSMutableArray arrayWithCapacity:0];
             [serviceDict setObject:characteristicsArray forKey:characteristicsArrayKey];
-            
+        
             // for each characteristic in this service, add characteristic dictionaries for each characteristic, and add the characteristic pointer
             for(CBCharacteristic *characteristic in [service characteristics]) {
-                
+            
                 // make dictionary, add to array, and add pointer
                 NSMutableDictionary *characteristicDict = [NSMutableDictionary dictionaryWithCapacity:0];
                 [characteristicsArray addObject:characteristicDict];
                 [characteristicDict setObject:characteristic forKey:characteristicPtrKey];
-
-                // UUID
-                NSLog(@"  with UUID: '%@'", [characteristic UUID]);
                 
-                // descriptors
-                descriptorCount = [[characteristic descriptors] count];
-                message = (descriptorCount == 1) ? @"descriptor" : @"descriptors";
-                NSLog(@"    %d %@ found", (int)descriptorCount, message);
-                
-                // properties
-                [self logProperties:[characteristic properties]];
-                
-                // is notifying
-                [self displayBoolWithName:@"isNotifying" andValue:[characteristic isNotifying]];
-                
-                // read value
-                if([characteristic properties] & CBCharacteristicPropertyRead) {
-                    NSData *value = [characteristic value];
-                    if(value) {
-                        NSLog(@"    value found!");
-                        NSString *dataString = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
-                        if(dataString) NSLog(@"    data string = '%@'", dataString);
-                        else NSLog(@"    data is NOT a string");
-                        [characteristicDict setObject:value forKey:characteristicValueKey];
-                    }
-                    else {
-                        NSLog(@"    could NOT read a value");
-                        [peripheral readValueForCharacteristic:characteristic];
-                    }
+                // check for value
+                value = [characteristic value];
+                if(value) [characteristicDict setObject:value forKey:characteristicValueKey];
+                else {
+                    properties = [characteristic properties];
+                    if(properties & CBCharacteristicPropertyRead) [peripheral readValueForCharacteristic:characteristic];
                 }
             }
         }
+        [self logData];
     }
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-    NSLog(@"---------------------------------------------------------------------------------------------");
-    if(error) {
-        NSLog(@"received error from characteristic with UUID: '%@'", [characteristic UUID]);
-        NSLog(@"didUpdateValueForCharacteristic error: %@", [error localizedDescription]);
-    }
+    if(error) NSLog(@"didUpdateValueForCharacteristic error: %@", [error localizedDescription]);
     else {
-        
         NSLog(@"received update for value of characteristic with UUID: '%@'", [characteristic UUID]);
+        
         NSData *value = [characteristic value];
-        if(value) {
-            NSLog(@"    value found!");
-            NSString *dataString = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
-            if(dataString) NSLog(@"    data string = '%@'", dataString);
-            else NSLog(@"    data is NOT a string");
-            [self addValue:value toCharacteristic:characteristic];
-        }
-        else NSLog(@"    could NOT read a value");
+        if(value) [self addValue:value toCharacteristic:characteristic];
+        [self logData];
     }
-    NSLog(@"---------------------------------------------------------------------------------------------");
 }
 
 - (bool)addValue:(NSData *)value toCharacteristic:(CBCharacteristic *)thisCharacteristic
@@ -211,9 +160,12 @@
 
 - (void)logString:(NSString *)logString afterSpaces:(NSUInteger)spaceCount
 {
-    NSString *spaceString = @"";
+    NSString *spaceString = @"", *result, *textString;
     for(NSUInteger n = 0; n < spaceCount; n++) spaceString = [spaceString stringByAppendingString:@" "];
-    NSLog(@"%@%@", spaceString, logString);
+    result = [NSString stringWithFormat:@"%@%@", spaceString, logString];
+    // NSLog(@"%@", result);
+    textString = [NSString stringWithFormat:@"%@\n%@", [dataTextView text], result];
+    [dataTextView setText:textString];
 }
 
 - (void)logCharacteristicData:(NSDictionary *)characteristicDict
@@ -221,9 +173,11 @@
     NSString *log, *log1;
     CBCharacteristic *characteristic = [characteristicDict objectForKey:characteristicPtrKey];
     
-    log = [NSString stringWithFormat:@"characteristic with UUID: '%@'", [characteristic UUID]];
-    [self logString:log afterSpaces:4];
-    
+    [self logString:@"" afterSpaces:0];
+    [self logString:@"characteristic with UUID:" afterSpaces:4];
+    log = [NSString stringWithFormat:@"'%@'", [characteristic UUID]];
+    [self logString:log afterSpaces:10];
+
     // descriptors
     NSUInteger count = [[characteristic descriptors] count];
     log = (count == 1) ? @"descriptor" : @"descriptors";
@@ -234,25 +188,25 @@
     NSMutableArray *propertyStrings = [self getPropertyStrings:[characteristic properties]];
     [self logString:@"properties:" afterSpaces:8];
     for(NSString *property in propertyStrings) [self logString:property afterSpaces:12];
-    if([characteristic properties] & CBCharacteristicPropertyRead) {
-        
-        // value
-        NSData *value = [characteristicDict objectForKey:characteristicValueKey];
-        if(value) {
-            [self logString:@"value:" afterSpaces:8];
-            log = [NSString stringWithFormat:@"data length = %lu", [value length]];
-            [self logString:log afterSpaces:12];
-            NSString *dataString = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
-            if(dataString) {
-                log = [NSString stringWithFormat:@"value = '%@'", dataString];
-                log1 = [NSString stringWithFormat:@"string length = %lu", [dataString length]];
-                [self logString:log1 afterSpaces:12];
-            }
-            else log = @"value is NOT a string";
-        }
-        else log = @"NO value present";
+
+    // value
+    // if([characteristic properties] & CBCharacteristicPropertyRead) {
+    NSData *value = [characteristicDict objectForKey:characteristicValueKey];
+    if(value) {
+        [self logString:@"value:" afterSpaces:8];
+        log = [NSString stringWithFormat:@"data length = %lu", [value length]];
         [self logString:log afterSpaces:12];
+        NSString *dataString = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
+        if(dataString) {
+            log = [NSString stringWithFormat:@"value = '%@'", dataString];
+            log1 = [NSString stringWithFormat:@"string length = %lu", [dataString length]];
+            [self logString:log1 afterSpaces:12];
+        }
+        else log = @"value is NOT a string";
     }
+    else log = @"NO value present";
+    [self logString:log afterSpaces:12];
+    // }
     
     // check is notifying
     log = [characteristic isNotifying] ? @"" : @"NOT ";
@@ -264,18 +218,151 @@
 {
     CBService *service;
     NSMutableArray *characteristics;
+    NSString *log;
     
-    NSLog(@"");
-    NSLog(@"peripheral with name: '%@'", [peripheral name]);
-    NSLog(@"peripheral UUID = '%@'", [peripheral identifier]);
+    [dataTextView setText:@""];
+    
+    log = [NSString stringWithFormat:@"peripheral with name: '%@'", [peripheral name]];
+    [self logString:log afterSpaces:0];
+    [self logString:@"peripheral UUID =" afterSpaces:0];
+    log = [NSString stringWithFormat:@"'%@'", [peripheral identifier]];
+    [self logString:log afterSpaces:10];
+    
     for(NSMutableDictionary *serviceDict in peripheralArray) {
         service = [serviceDict objectForKey:servicePtrKey];
-        NSLog(@"service with UUID: '%@'", [service UUID]);
+        [self logString:@"\nservice with UUID:" afterSpaces:0];
+        log = [NSString stringWithFormat:@"'%@'", [service UUID]];
+        [self logString:log afterSpaces:10];
         characteristics = [serviceDict objectForKey:characteristicsArrayKey];
-        for(NSMutableDictionary *characteristicDict in characteristics) {
-            [self logCharacteristicData:characteristicDict];
-            NSLog(@"");
+        for(NSMutableDictionary *characteristicDict in characteristics) [self logCharacteristicData:characteristicDict];
+    }
+    [self populateMenuTableViewController];
+}
+
+#pragma mark - UITableViewController data source
+
+- (void)populateMenuTableViewController
+{
+    NSLog(@"*** populate menu table view controller ***");
+    NSString *tableHeaderText = [peripheral name];
+    UIView *tableHeaderView = [hdSystem makeHeaderViewWithText:tableHeaderText
+                                                  andTextColor:[UIColor redColor]
+                                                   andTextSize:25
+                                                     andOffset:15
+                                                withBackground:true];
+    [peripheralTableView setTableHeaderView:tableHeaderView];
+    
+    [peripheralTableView setRowHeight:40.0];
+    menuTableViewSectionsArray = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    [self generateServicesMenu];
+    menuTablePopulated = true;
+    
+    // TableViewData *menuItemData = [self getCellDataFromSection:1 andRow:2];
+    // [menuItemData changeValueTextTo:@"Oops"];
+    
+    // [self setAllButtonTitles];
+    [peripheralTableView reloadData];
+}
+
+- (void)generateServicesMenu
+{
+    CBService *service;
+    TableViewSectionData *serviceSection;
+    NSString *serviceTitle, *characteristicTitle, *firstPart, *secondPart;
+    NSMutableArray *characteristicsArray;
+    CBCharacteristic *characteristic;
+    
+    // for all services
+    for(NSMutableDictionary *serviceDict in peripheralArray) {
+        service = [serviceDict objectForKey:servicePtrKey];
+        serviceTitle = [NSString stringWithFormat:@"service with UUID: '%@'", [service UUID]];
+        if([serviceTitle length] > 37) {
+            firstPart = [serviceTitle substringToIndex:34];
+            secondPart = [serviceTitle substringFromIndex:34];
+            serviceTitle = [NSString stringWithFormat:@"%@ %@", firstPart, secondPart];     // space to create folding point
+        }
+        serviceSection = [[TableViewSectionData alloc] initSectionWithTitle:serviceTitle];
+        [menuTableViewSectionsArray addObject:serviceSection];
+        
+        // for all characteristics
+        characteristicsArray = [serviceDict objectForKey:characteristicsArrayKey];
+        for(NSMutableDictionary *characteristicDict in characteristicsArray) {
+            characteristic = [characteristicDict objectForKey:characteristicPtrKey];
+            characteristicTitle = [NSString stringWithFormat:@"'%@'", [characteristic UUID]];
+            [serviceSection addDefaultSelectableCellWithText:characteristicTitle
+                                                     andName:@""
+                                   andResponseMethodSelector:@selector(dummy)
+                                                   isEnabled:true];
         }
     }
 }
+
+- (void)deselectLastUsedCell
+{
+    NSIndexPath *lastIndexPath = [peripheralTableView indexPathForSelectedRow];
+    [peripheralTableView deselectRowAtIndexPath:lastIndexPath animated:YES];
+    [peripheralTableView setAllowsSelection:YES];
+}
+
+- (TableViewData *)getCellDataFromSection:(NSUInteger)section andRow:(NSUInteger)row
+{
+    NSMutableArray *cellData = [[menuTableViewSectionsArray objectAtIndex:section] cellData];
+    return [cellData objectAtIndex:row];
+}
+
+- (TableViewData *)getCellDataFromIndexPath:(NSIndexPath *)indexPath
+{
+    return [self getCellDataFromSection:[indexPath section]
+                                 andRow:[indexPath row]];
+}
+
+- (void)dummy
+{
+    NSLog(@"*** dummy ***");
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 45.0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [[menuTableViewSectionsArray objectAtIndex:section] title];
+    return [hdSystem makeHeaderViewWithText:title
+                               andTextColor:[UIColor redColor]
+                                andTextSize:17
+                                  andOffset:15
+                             withBackground:true];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return [menuTableViewSectionsArray count];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSMutableArray *cellData = [[menuTableViewSectionsArray objectAtIndex:section] cellData];
+    return [cellData count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TableViewData *thisCellData = [self getCellDataFromIndexPath:indexPath];
+    return [thisCellData getCellForTableView:tableView andDelegate:self];
+}
+
+#pragma mark - UITableViewController delegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TableViewData *thisCellData = [self getCellDataFromIndexPath:indexPath];
+    [thisCellData handleSelection];
+    
+    [self performSelector:@selector(deselectLastUsedCell)
+               withObject:self
+               afterDelay:1.0];
+}
+
 @end

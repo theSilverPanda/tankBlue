@@ -9,9 +9,13 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <UIKit/UIKit.h>
 
-@interface AnalyzePeripheralViewController : UIViewController <CBPeripheralDelegate>
+@interface AnalyzePeripheralViewController : UIViewController <CBPeripheralDelegate, UITableViewDelegate, UITableViewDataSource>
 {
-    NSMutableArray *peripheralArray;
+    NSMutableArray *peripheralArray, *menuTableViewSectionsArray;
+    bool menuTablePopulated;
+    
+    __weak IBOutlet UITextView *dataTextView;
+    __weak IBOutlet UITableView *peripheralTableView;
 }
 
 @property(nonatomic, strong) CBCentralManager *centralManager;
@@ -20,6 +24,5 @@
 - (IBAction)backButtonPressed:(id)sender;
 - (IBAction)rediscoverServicesButtonPressed:(id)sender;
 - (IBAction)menuTestScreenButtonPressed:(id)sender;
-- (IBAction)revisitDataButtonPressed:(id)sender;
 
 @end
