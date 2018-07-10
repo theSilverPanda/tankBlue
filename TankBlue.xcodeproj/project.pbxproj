@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		B604EB952024E7BA0051C88F /* PeripheralItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B604EB942024E7BA0051C88F /* PeripheralItem.m */; };
+		B61E3E5D20F56F9D00D2E79F /* CharacteristicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E3E5B20F56F9D00D2E79F /* CharacteristicTableViewCell.m */; };
+		B61E3E5E20F56F9D00D2E79F /* CharacteristicTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B61E3E5C20F56F9D00D2E79F /* CharacteristicTableViewCell.xib */; };
 		B6387A701FF5F84F004680A4 /* HD_System.m in Sources */ = {isa = PBXBuildFile; fileRef = B6387A6E1FF5F84E004680A4 /* HD_System.m */; };
 		B6387A7A1FF5FB07004680A4 /* UIPopupView_checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = B6387A741FF5FB06004680A4 /* UIPopupView_checkmark.png */; };
 		B6387A7B1FF5FB07004680A4 /* UIPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6387A751FF5FB06004680A4 /* UIPopupView.m */; };
@@ -35,6 +37,9 @@
 /* Begin PBXFileReference section */
 		B604EB932024E7BA0051C88F /* PeripheralItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PeripheralItem.h; sourceTree = "<group>"; };
 		B604EB942024E7BA0051C88F /* PeripheralItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PeripheralItem.m; sourceTree = "<group>"; };
+		B61E3E5A20F56F9D00D2E79F /* CharacteristicTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CharacteristicTableViewCell.h; sourceTree = "<group>"; };
+		B61E3E5B20F56F9D00D2E79F /* CharacteristicTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CharacteristicTableViewCell.m; sourceTree = "<group>"; };
+		B61E3E5C20F56F9D00D2E79F /* CharacteristicTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CharacteristicTableViewCell.xib; sourceTree = "<group>"; };
 		B6387A6E1FF5F84E004680A4 /* HD_System.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HD_System.m; sourceTree = "<group>"; };
 		B6387A6F1FF5F84E004680A4 /* HD_System.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HD_System.h; sourceTree = "<group>"; };
 		B6387A741FF5FB06004680A4 /* UIPopupView_checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPopupView_checkmark.png; sourceTree = "<group>"; };
@@ -162,6 +167,9 @@
 				B66AC00C20ED9A4000FFD97E /* ButtonTableCell.h */,
 				B66AC00A20ED9A4000FFD97E /* ButtonTableCell.m */,
 				B66AC00B20ED9A4000FFD97E /* ButtonTableCell.xib */,
+				B61E3E5A20F56F9D00D2E79F /* CharacteristicTableViewCell.h */,
+				B61E3E5B20F56F9D00D2E79F /* CharacteristicTableViewCell.m */,
+				B61E3E5C20F56F9D00D2E79F /* CharacteristicTableViewCell.xib */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -231,6 +239,7 @@
 				B66AC00E20ED9A4100FFD97E /* ButtonTableCell.xib in Resources */,
 				B6387A7C1FF5FB07004680A4 /* UIPopupView_x.png in Resources */,
 				B6387A7A1FF5FB07004680A4 /* UIPopupView_checkmark.png in Resources */,
+				B61E3E5E20F56F9D00D2E79F /* CharacteristicTableViewCell.xib in Resources */,
 				B66AC00020ED944C00FFD97E /* MenuTestViewController.xib in Resources */,
 				B66319AC1FEEE35100E15D2F /* Assets.xcassets in Resources */,
 				B6387A7D1FF5FB07004680A4 /* UIPopupView_checkmark@2x.png in Resources */,
@@ -256,6 +265,7 @@
 				B604EB952024E7BA0051C88F /* PeripheralItem.m in Sources */,
 				B66AC00820ED995600FFD97E /* TableViewData.m in Sources */,
 				B66AC00D20ED9A4100FFD97E /* ButtonTableCell.m in Sources */,
+				B61E3E5D20F56F9D00D2E79F /* CharacteristicTableViewCell.m in Sources */,
 				B66319A41FEEE35100E15D2F /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

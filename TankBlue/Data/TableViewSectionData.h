@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreBluetooth/CoreBluetooth.h>
 
 @interface TableViewSectionData : NSObject
 
@@ -18,4 +19,6 @@
                                  andName:(NSString *)name
                andResponseMethodSelector:(SEL)thisSelector
                                isEnabled:(bool)enabled;
+- (void)addCharacteristicCellWithUUID:(CBUUID *)thisUUID
+                             andValue:(NSData *)value;
 @end

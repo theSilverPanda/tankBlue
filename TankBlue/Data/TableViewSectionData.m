@@ -34,4 +34,12 @@
     [cellData addObject:data];
 }
 
+- (void)addCharacteristicCellWithUUID:(CBUUID *)thisUUID
+                             andValue:(NSData *)value
+{
+    TableViewData *data = [[TableViewData alloc] initCharacteristicCellWithUUID:(CBUUID *)thisUUID
+                                                                       andValue:(NSData *)value];
+    [cellData addObject:data];
+}
+
 @end

@@ -252,7 +252,7 @@ extern HD_System *hdSystem;
                                                 withBackground:true];
     [peripheralTableView setTableHeaderView:tableHeaderView];
     
-    [peripheralTableView setRowHeight:40.0];
+    [peripheralTableView setRowHeight:100.0];
     menuTableViewSectionsArray = [[NSMutableArray alloc] initWithCapacity:0];
     
     [self generateServicesMenu];
@@ -269,7 +269,7 @@ extern HD_System *hdSystem;
 {
     CBService *service;
     TableViewSectionData *serviceSection;
-    NSString *serviceTitle, *characteristicTitle, *firstPart, *secondPart;
+    NSString *serviceTitle, *firstPart, *secondPart;
     NSMutableArray *characteristicsArray;
     CBCharacteristic *characteristic;
     
@@ -289,11 +289,8 @@ extern HD_System *hdSystem;
         characteristicsArray = [serviceDict objectForKey:characteristicsArrayKey];
         for(NSMutableDictionary *characteristicDict in characteristicsArray) {
             characteristic = [characteristicDict objectForKey:characteristicPtrKey];
-            characteristicTitle = [NSString stringWithFormat:@"'%@'", [characteristic UUID]];
-            [serviceSection addDefaultSelectableCellWithText:characteristicTitle
-                                                     andName:@""
-                                   andResponseMethodSelector:@selector(dummy)
-                                                   isEnabled:true];
+            [serviceSection addCharacteristicCellWithUUID:[characteristic UUID]
+                                                 andValue:[characteristic value]];
         }
     }
 }

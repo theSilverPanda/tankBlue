@@ -8,16 +8,19 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import <CoreBluetooth/CoreBluetooth.h>
 
-typedef enum {ctDefault = 0, ctButton, ctDefaultSelectable} eCellType;
+typedef enum {ctDefault = 0, ctButton, ctDefaultSelectable, ctCharacteristic} eCellType;
 
 @interface TableViewData : NSObject
 
 @property (nonatomic) eCellType cellType;
-@property (nonatomic, strong) NSString *buttonText, *nameText, *valueText;
-@property (nonatomic, strong) id delegate;
+@property (nonatomic, weak) NSString *buttonText, *nameText, *valueText;
+@property (nonatomic, weak) id delegate;
 @property (nonatomic) SEL responseMethod;
 @property (nonatomic) bool enabled;
+@property (nonatomic, weak) CBUUID *uuid;
+@property (nonatomic, weak) NSData *value;
 
 - (id)initDefaultCellWithText:(NSString *)text
                       andName:(NSString *)name;
@@ -27,7 +30,8 @@ typedef enum {ctDefault = 0, ctButton, ctDefaultSelectable} eCellType;
                                 andName:(NSString *)name
               andResponseMethodSelector:(SEL)thisSelector
                               isEnabled:(bool)isEnabled;
-
+- (id)initCharacteristicCellWithUUID:(CBUUID *)thisUUID
+                            andValue:(NSData *)value;
 - (UITableViewCell *)getCellForTableView:(UITableView *)tableView
                              andDelegate:(id)thisDelegate;
 - (void)handleSelection;

@@ -7,15 +7,16 @@
 //
 
 #import "ButtonTableCell.h"
+#import "CharacteristicTableViewCell.h"
 #import "HD_System.h"
-// #import "DataStore.h"
+
 #import "TableViewData.h"
 
 extern HD_System *hdSystem;
 // extern DataStore *dataStore;
 
 @implementation TableViewData
-@synthesize cellType, buttonText, nameText, valueText, delegate, responseMethod, enabled;
+@synthesize cellType, buttonText, nameText, valueText, delegate, responseMethod, enabled, uuid, value;
 
 - (id)initDefaultCellWithText:(NSString *)text
                       andName:(NSString *)name
@@ -59,6 +60,18 @@ extern HD_System *hdSystem;
     return self;
 }
 
+- (id)initCharacteristicCellWithUUID:(CBUUID *)thisUUID
+                            andValue:(NSData *)thisValue
+{
+    self = [super init];
+    if(self) {
+        cellType = ctCharacteristic;
+        uuid = thisUUID;
+        value = thisValue;
+    }
+    return self;
+}
+
 - (UITableViewCell *)getCellForTableView:(UITableView *)tableView
               andDelegate:(id)thisDelegate
 {
@@ -76,6 +89,9 @@ extern HD_System *hdSystem;
             break;
         case ctDefaultSelectable:
             cell = [self getDefaultSelectableCellForTableView:tableView];
+            break;
+        case ctCharacteristic:
+            cell = [self getCharacteristicCellForTableView:tableView];
             break;
         default: cell = nil;
     }
@@ -110,7 +126,9 @@ extern HD_System *hdSystem;
     }
     
     [[cell button] setTitle:buttonText forState:0];
-    [[cell button] addTarget:self action:@selector(identityButtonWasPressed) forControlEvents:UIControlEventTouchUpInside];
+    [[cell button] addTarget:self
+                      action:@selector(identityButtonWasPressed)
+            forControlEvents:UIControlEventTouchUpInside];
     [[cell nameLabel] setText:nameText];
     
     return cell;
@@ -134,9 +152,39 @@ extern HD_System *hdSystem;
     return cell;
 }
 
+- (UITableViewCell *)getCharacteristicCellForTableView:(UITableView *)tableView
+{
+    static NSString *characteristicTableIdentifier = @"CharacteristicTableViewCell";
+    CharacteristicTableViewCell *cell = (CharacteristicTableViewCell *)[tableView dequeueReusableCellWithIdentifier:characteristicTableIdentifier];
+    
+    // Configure the cell...
+    if(!cell) {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CharacteristicTableViewCell" owner:self options:nil];
+        cell = [nib objectAtIndex:0];
+    }
+    
+    NSString *uuidString = [NSString stringWithFormat:@"'%@'", uuid];
+    [[cell uuidLabel] setText:uuidString];
+    
+    NSString *valueString = @"No data available";
+    if(value) {
+        NSString *tempString = [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
+        if([value length] > [tempString length]) valueString = @"data geen string";
+        else valueString = [NSString stringWithFormat:@"'%@'", tempString];
+    }
+    [[cell valueLabel] setText:valueString];
+    
+    return cell;
+}
+
 - (void)identityButtonWasPressed
 {
     [hdSystem sendMethod:@"identityButtonWasPressed" toDelegate:delegate];
+}
+
+- (void)openViewButtonWasPressed
+{
+    NSLog(@"open view button was pressed");
 }
 
 - (void)handleSelection
@@ -156,6 +204,7 @@ extern HD_System *hdSystem;
         case ctDefault: cellTypeString = @"default"; break;
         case ctButton: cellTypeString = @"button"; break;
         case ctDefaultSelectable: cellTypeString = @"defaultSelectable"; break;
+        case ctCharacteristic: cellTypeString = @"characteristic"; break;
         default: cellTypeString = @"unknown";
     }
     return cellTypeString;
